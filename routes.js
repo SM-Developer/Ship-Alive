@@ -12,4 +12,7 @@ module.exports = function(app){
 	  res.sendFile(__dirname + '/client/public/lobby.html');
 	});
 
+	app.get('/room', function(req, res) {
+	  res.sendFile(__dirname + '/client/public/lobby.html');
+	});
 }

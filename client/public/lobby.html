@@ -27,7 +27,7 @@
 		innerHtmlRoom += '<div class="max-container">';
 
 		for (var i = 0; i < 5; i++) {
-			innerHtmlRoom += '<div id="room-box" class="box">';
+			innerHtmlRoom += '<div id="room-box" class="box" onclick="on_click_room(' + i + ')">';
 
 			var cnt = 0;
 			for (var j = 0; j < 8; j++) {
@@ -44,6 +44,18 @@
 		return innerHtmlRoom;
 
 	};
+
+	function on_click_room(num) {
+		socket.emit('tryRoom', {num: num});
+	}
+
+    socket.on('tryRoom', function(data) {
+        if (data.type !== 'success') {
+        	alert(data.msg);
+        } else {
+			socket.emit('GetRoom', {name: data.name, num: data.num});
+        }
+    });
 
 </script>
 

@@ -8,12 +8,23 @@
 
 <script>
     var socket = io();
+    var name;
 
-    socket.on('GetLobby', function(data) {
+    socket.on('GetLobby', function(name, roomList) {
+    	name = name;
     	document.getElementById('ship_frame').src = "http://localhost:2000/lobby";
 		document.getElementById('ship_frame').onload = function() {
-		 	var h = document.getElementById('ship_frame').contentWindow.initRoom(data);
+		 	var h = document.getElementById('ship_frame').contentWindow.initRoom(roomList);
 		 	document.getElementById('ship_frame').contentWindow.document.getElementById("room").innerHTML = h;
+		};
+    });
+
+    socket.on('GetRoom', function(data) {
+    	name = data.name;
+    	num = data.num;
+    	document.getElementById('ship_frame').src = "http://localhost:2000/room";
+		document.getElementById('ship_frame').onload = function() {
+		 	
 		};
     });
 

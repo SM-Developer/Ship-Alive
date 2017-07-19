@@ -8,8 +8,14 @@ class Room {
 
 	}
 
-	static addPlayer(num, id) {
+	static addPlayer(num, name) {
 		// PLAYER_LIST[id] = 'LOBBY';
+		for (var j = 0; j < 8; j++) {
+	      if (PLAYER_LIST[num][j] === 'No') {
+	        PLAYER_LIST[num][j] = name;
+	        break;
+	      }
+	    }
 	}
 
 	static delPlayer(id) {

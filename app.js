@@ -49,10 +49,33 @@ io.sockets.on('connection', function(socket) {
   });
 
   socket.on('GetLobby', function (data) {
-    if (DEBUG) console.log('GetLobby');
-    socket.emit('GetLobby', Room.getList());
+    socket.emit('GetLobby', name, Room.getList());
   });
 
+  socket.on('tryRoom', function (data) {
+    var room = Room.getList()[data.num]
+
+    if (room[8] !== 'WAIT') {
+      socket.emit('tryRoom', {type: 'error', msg: "is already start"});
+      return ;
+    }
+
+    var cnt = 0;
+    for (var j = 0; j < 8; j++) {
+      if (room[j] !== 'No') cnt++;
+    }
+    if (cnt == 8) {
+      socket.emit('tryRoom', {type: 'error', msg: "is Full"});
+      return ;
+    }
+
+    Room.addPlayer(data.num, name);
+    socket.emit('tryRoom', {type: 'success', name: name, num: data.num});
+  });
+
+  socket.on('GetRoom', function (data) {
+    socket.emit('GetRoom', data);
+  });
  
   /* In Game */
   /*
