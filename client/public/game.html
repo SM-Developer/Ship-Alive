@@ -10,11 +10,12 @@
     var socket = io();
     var name;
 
-    socket.on('GetLobby', function(name, roomList) {
+    socket.on('GetLobby', function(name, data) {
     	name = name;
     	document.getElementById('ship_frame').src = "http://localhost:2000/lobby";
 		document.getElementById('ship_frame').onload = function() {
-		 	var h = document.getElementById('ship_frame').contentWindow.initRoom(roomList);
+			console.log(data);
+		 	var h = document.getElementById('ship_frame').contentWindow.initRoom(data);
 		 	document.getElementById('ship_frame').contentWindow.document.getElementById("room").innerHTML = h;
 		};
     });

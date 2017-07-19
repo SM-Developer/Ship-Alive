@@ -30,12 +30,11 @@
 			innerHtmlRoom += '<div id="room-box" class="box" onclick="on_click_room(' + i + ')">';
 
 			var cnt = 0;
-			for (var j = 0; j < 8; j++) {
-				if (data[i][j] !== 'No') cnt++;
+			for (var j in data.list[i]) {
+				cnt++;
 			}
 			innerHtmlRoom += i + '번방 ' + cnt + '/8 ';
-			console.log(data[i]);
-			innerHtmlRoom += (data[i][8] == 'WAIT')?'대기중':'게임중';
+			innerHtmlRoom += (data.state[i] == 'WAIT')?'대기중':'게임중';
 			innerHtmlRoom += '</div>';
 		}
 
@@ -50,6 +49,7 @@
 	}
 
     socket.on('tryRoom', function(data) {
+    	
         if (data.type !== 'success') {
         	alert(data.msg);
         } else {
@@ -58,6 +58,7 @@
     });
 
     socket.on('roomChange', function(data) {
+    	console.log(data);
         document.getElementById('room').innerHTML = initRoom(data);
     });
 

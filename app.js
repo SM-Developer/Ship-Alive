@@ -52,30 +52,30 @@ io.sockets.on('connection', function(socket) {
   });
 
   socket.on('GetLobby', function (data) {
-    socket.emit('GetLobby', name, Room.getList());
+    socket.emit('GetLobby', name, {state: Room.getState(), list: Room.getList()});
   });
 
   socket.on('tryRoom', function (data) {
-    var room = Room.getList()[data.num]
+    var room = Room.getNumList(data.num)
 
-    if (room[8] !== 'WAIT') {
+    if (Room.getNumState(data.num) !== 'WAIT') {
       socket.emit('tryRoom', {type: 'error', msg: "is already start"});
       return ;
     }
 
     var cnt = 0;
-    for (var j = 0; j < 8; j++) {
-      if (room[j] !== 'No') cnt++;
+    for (var i in room) {
+      cnt++;
     }
     if (cnt == 8) {
       socket.emit('tryRoom', {type: 'error', msg: "is Full"});
       return ;
     }
 
-    Room.addPlayer(data.num, name);
+    Room.addPlayer(data.num, socket.id, name);
     where = data.num;
     socket.emit('tryRoom', {type: 'success', name: name, num: data.num});
-    io.sockets.emit('roomChange', Room.getList());
+    io.sockets.emit('roomChange', {state: Room.getState(), list: Room.getList()});
   });
 
   socket.on('GetRoom', function (data) {
@@ -113,8 +113,8 @@ io.sockets.on('connection', function(socket) {
     delete PLAYER_LIST[socket.id];
     Lobby.delPlayer(socket.id);
     if (where !== 'Lobby') {
-      Room.delPlayer(where, name);
-      io.sockets.emit('roomChange', Room.getList());
+      Room.delPlayer(where, socket.id);
+      io.sockets.emit('roomChange', {state: Room.getState(), list: Room.getList()});
     }
   });
 });
