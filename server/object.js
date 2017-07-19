@@ -1,6 +1,7 @@
 'use strict'
 
-class Object {
+class Obj
+{
 	constructor(x, y, angle) {
 		this.isAlive = true;
 		this.x = x;
@@ -9,4 +10,4 @@ class Object {
 	}
 }
 
-module.exports = Object;
+module.exports = Obj;

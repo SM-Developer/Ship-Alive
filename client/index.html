@@ -10,6 +10,9 @@
 <script type = "text/javascript" src = "./client/object.js"></script>
 <script type = "text/javascript" src = "./client/ship.js"></script>
 <script type = "text/javascript" src = "./client/player.js"></script>
+<script type = "text/javascript" src = "./client/computer.js"></script>
+<script type = "text/javascript" src = "./client/bullet.js"></script>
+<script type = "text/javascript" src = "./client/star.js"></script>
 
 <script>
     var context = document.getElementById("context").getContext("2d");
@@ -20,34 +23,85 @@
     var img = new Object();
     img.player = new Image();
     img.player.src = "./client/image/player.png";
+    img.bullet = new Image();
+    img.bullet.src = "./client/image/bullet.png";
+    img.computer = new Array();
+    img.computer[1] = new Image();
+    img.computer[1].src = "./client/image/computerA.png";
+    img.computer[2] = new Image();
+    img.computer[2].src = "./client/image/computerB.png";
 
     Player.list = {};
+    Bullet.list = {};
+    Computer.list = {};
     var scr = new Object();
 
     socket.on('newPosition', function(data) {
         context.clearRect(0, 0, 800, 600);
 
-        for (var i = 0; i < data.player.length; i++) {
-            if (Player.list[data.player[i].id] == null) {
-                Player.list[data.player[i].id] = new Player(data.player[i].x, data.player[i].y, data.player[i].angle);
+        for (var i = 0; i < data.player.length; i++)
+        {
+            if (Player.list[data.player[i].id] == null)
+            {
+                Player.list[data.player[i].id] = new Player(data.player[i].x, data.player[i].y, data.player[i].angle, data.player[i].hp);
             }
-            else {
+            else
+            {
                 Player.list[data.player[i].id].x = data.player[i].x;
                 Player.list[data.player[i].id].y = data.player[i].y;
                 Player.list[data.player[i].id].angle = data.player[i].angle;
+                Player.list[data.player[i].id].hp = data.player[i].hp;
+            }
+        }
+        for (var i = 0; i < data.bullet.length; i++)
+        {
+            if (Bullet.list[i] == null) {
+                Bullet.list[i] = new Bullet(data.bullet[i].x, data.bullet[i].y, data.bullet[i].angle);
+            }
+            else {
+                Bullet.list[i].x = data.bullet[i].x;
+                Bullet.list[i].y = data.bullet[i].y;
+                Bullet.list[i].angle = data.bullet[i].angle;
+            }
+        }
+        for (var i = 0; i < data.computer.length; i++)
+        {
+            if (Computer.list[i] == null) {
+                Computer.list[i] = new Computer(data.computer[i].type, 
+                                                data.computer[i].x, 
+                                                data.computer[i].y, 
+                                                data.computer[i].angle, 
+                                                data.computer[i].hp);
+            }
+            else {
+                Computer.list[i].type = data.computer[i].type;
+                Computer.list[i].x = data.computer[i].x;
+                Computer.list[i].y = data.computer[i].y;
+                Computer.list[i].angle = data.computer[i].angle;
+                Computer.list[i].hp = data.computer[i].hp;
             }
         }
 
         Player.list[socketId].setScreen(scr);
 
-        for (var i = 0; i < data.player.length; i++) {
+        Star.print(scr, context);
+        for (var i = 0; i < data.player.length; i++)
+        {
             Player.list[data.player[i].id].print(img, scr, context);
+        }
+        for (var i = 0; i < data.bullet.length; i++)
+        {
+            Bullet.list[i].print(img, scr, context);
+        }
+        for (var i = 0; i < data.computer.length; i++) {
+            Computer.list[i].print(img, scr, context);
         }
     });
 
     socket.on('initGame', function(id, player) {
         // init player
         socketId = id;
+        for(var i = 1; i <= 1000; i++) Star.addStar();
     });
 
     document.onkeydown = function(event) {
@@ -77,12 +131,13 @@
     document.onmousemove = function (e) {
         var pkey = e || window.event;
         var p = Player.list[socketId];
-
-        socket.emit('moveMouse', Math.atan2(pkey.pageY - 600/2, pkey.pageX - 800/2)*180/Math.PI);
+        var angle = Math.atan2(pkey.pageY - 600 / 2, pkey.pageX - 800 / 2) * 180 / Math.PI;
+        socket.emit('moveMouse', angle);
     };
     document.onmousedown = function (e) {
     };
     document.onclick = function (e) {
+        socket.emit('clickMouse');
     }
 
 </script>

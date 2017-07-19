@@ -1,4 +1,4 @@
-class Object
+class Obj
 {
     constructor(x, y, angle)
     {
@@ -10,7 +10,7 @@ class Object
     rotateContext(context)
     {
         context.translate(this.x, this.y);
-        context.rotate(this.angle * Math.PI/180);
+        context.rotate(this.angle*Math.PI/180);
         context.translate(-1*this.x, -1*this.y);
     };
 }
