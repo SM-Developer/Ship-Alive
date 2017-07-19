@@ -57,6 +57,10 @@
         }
     });
 
+    socket.on('roomChange', function(data) {
+        document.getElementById('room').innerHTML = initRoom(data);
+    });
+
 </script>
 
 

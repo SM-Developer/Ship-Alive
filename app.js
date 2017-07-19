@@ -36,8 +36,11 @@ io.sockets.on('connection', function(socket) {
   SOCKET_LIST[socket.id] = socket;
 
   var name;
+  var where;
 
   Lobby.addPlayer(socket.id);
+  where = 'Lobby';
+
   socket.on('LogIn', function (data) {
     if (PLAYER_NAME_LIST[data.name] != undefined) {
       socket.emit('Lobby', 'alread exist name');
@@ -70,7 +73,9 @@ io.sockets.on('connection', function(socket) {
     }
 
     Room.addPlayer(data.num, name);
+    where = data.num;
     socket.emit('tryRoom', {type: 'success', name: name, num: data.num});
+    io.sockets.emit('roomChange', Room.getList());
   });
 
   socket.on('GetRoom', function (data) {
@@ -106,6 +111,11 @@ io.sockets.on('connection', function(socket) {
   socket.on('disconnect', function() {
     delete SOCKET_LIST[socket.id];
     delete PLAYER_LIST[socket.id];
+    Lobby.delPlayer(socket.id);
+    if (where !== 'Lobby') {
+      Room.delPlayer(where, name);
+      io.sockets.emit('roomChange', Room.getList());
+    }
   });
 });
 

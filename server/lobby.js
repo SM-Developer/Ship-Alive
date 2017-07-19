@@ -8,7 +8,7 @@ class Lobby {
 	}
 
 	static delPlayer(id) {
-		delete SOCKET_LIST[id];
+		delete PLAYER_LIST[id];
 	}
 };
 
