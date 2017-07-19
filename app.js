@@ -49,12 +49,12 @@ io.sockets.on('connection', function(socket) {
     }
   });
   //console.log("A");
-  /*
-  In Game
+  
+  /* In Game */
 
   PLAYER_LIST[socket.id] = new Player(socket.id);
 
-  socket.emit('initGame', socket.id, Player.list[socket.id]);
+  socket.emit('initGame', socket.id, PLAYER_LIST);
 
   socket.on('keyPress', function (data) {
     if (data.inputId === 'right') {
@@ -70,7 +70,11 @@ io.sockets.on('connection', function(socket) {
       PLAYER_LIST[socket.id].pressDown = data.isPress;
     }
   });
-  */
+
+  socket.on('moveMouse', function (angle) {
+      PLAYER_LIST[socket.id].angle = angle;
+  });
+
 
   socket.on('disconnect', function() {
     delete SOCKET_LIST[socket.id];

@@ -1,11 +1,11 @@
 'use strict'
 
 class Object {
-	constructor(x, y) {
+	constructor(x, y, angle) {
 		this.isAlive = true;
 		this.x = x;
 		this.y = y;
-		this.angle = 0;
+		this.angle = angle;
 	}
 }
 
