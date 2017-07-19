@@ -10,12 +10,16 @@
     var socket = io();
 
     socket.on('GetLobby', function(data) {
-    	document.getElementById('ship_frame').src = "http://localhost:2000/lobby"
+    	document.getElementById('ship_frame').src = "http://localhost:2000/lobby";
+		document.getElementById('ship_frame').onload = function() {
+		 	var h = document.getElementById('ship_frame').contentWindow.initRoom(data);
+		 	document.getElementById('ship_frame').contentWindow.document.getElementById("room").innerHTML = h;
+		};
     });
 
 </script>
 
-<iframe id="ship_frame" src="http://localhost:2000/lobby"></iframe>
+<iframe id="ship_frame" src="http://localhost:2000/login"></iframe>
 
 </html>
 

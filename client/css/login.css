@@ -9,15 +9,6 @@
 	transform: translateY(-50%);
 }
 
-.box {
-    position: relative;
-    display: block;
-    background: #ffffff;
-    padding: 0 10px;
-    border-radius: 3px;
-    box-shadow: 0 2px 5px rgba(11, 12, 12, 0.16);
-}
-
 input[type=text] {
     width: 100%;
     padding: 12px 20px;

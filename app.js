@@ -19,6 +19,9 @@ var DEBUG = true;
 const Lobby = require('./server/lobby.js');
 var PLAYER_NAME_LIST = {};
 
+const Room = require('./server/room.js');
+Room.initList();
+
 /* In Game */
 const Player = require('./server/player.js');
 var PLAYER_LIST = {};
@@ -47,7 +50,7 @@ io.sockets.on('connection', function(socket) {
 
   socket.on('GetLobby', function (data) {
     if (DEBUG) console.log('GetLobby');
-    socket.emit('GetLobby', name);
+    socket.emit('GetLobby', Room.getList());
   });
 
  

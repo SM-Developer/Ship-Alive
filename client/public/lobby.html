@@ -13,13 +13,39 @@
 </div>
 
 <div id="room">
-	<div class="max-container">
-		<div id="room-box" class="box">1번방 1/8 대기중</div>
-		<div id="room-box" class="box">2번방 2/8 게임중</div>
-		<div id="room-box" class="box">3번방 3/8 대기중</div>
-		<div id="room-box" class="box">4번방 0/8 대기중</div>
-		<div id="room-box" class="box">5번방 2/8 대기중</div>
-	</div>
+
 </div>
+
+
+<script>
+
+	var socket = parent.socket;
+
+	function initRoom(data) {
+		//console.log(data);
+		var innerHtmlRoom = '';
+		innerHtmlRoom += '<div class="max-container">';
+
+		for (var i = 0; i < 5; i++) {
+			innerHtmlRoom += '<div id="room-box" class="box">';
+
+			var cnt = 0;
+			for (var j = 0; j < 8; j++) {
+				if (data[i][j] !== 'No') cnt++;
+			}
+			innerHtmlRoom += i + '번방 ' + cnt + '/8 ';
+			console.log(data[i]);
+			innerHtmlRoom += (data[i][8] == 'WAIT')?'대기중':'게임중';
+			innerHtmlRoom += '</div>';
+		}
+
+		innerHtmlRoom += '</div>';
+
+		return innerHtmlRoom;
+
+	};
+
+</script>
+
 
 </html>
