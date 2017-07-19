@@ -1,0 +1,97 @@
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+
+<html>
+
+<style>
+	html, body {
+		margin: 0;
+		padding: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	#input_name {
+		top: 50%;
+		margin: 0 auto;
+		width: 400px;
+		height: 280px;
+		-webkit-transform: translateY(-50%);
+		-moz-transform: translateY(-50%);
+		transform: translateY(-50%);
+	}
+
+	.box {
+	    position: relative;
+	    display: block;
+	    background: #ffffff;
+	    padding: 0 10px;
+	    border-radius: 3px;
+	    box-shadow: 0 2px 5px rgba(11, 12, 12, 0.16);
+	}
+
+	input[type=text] {
+	    width: 100%;
+	    padding: 12px 20px;
+	    margin: 8px 0;
+	    display: inline-block;
+	    border: 1px solid #ccc;
+	    border-radius: 4px;
+	    box-sizing: border-box;
+	}
+
+	input[type=submit] {
+	    width: 100%;
+	    background-color: #4CAF50;
+	    color: white;
+	    padding: 14px 20px;
+	    margin: 8px 0;
+	    border: none;
+	    border-radius: 4px;
+	    cursor: pointer;
+	}
+
+	input[type=submit]:hover {
+	    background-color: #45a049;
+	}
+
+	.wrapper_div_50_vertical {
+		position: absolute;
+		top: 50%;
+		width: 80%;
+		margin: 0 8%;
+		-webkit-transform: translateY(-50%);
+		-moz-transform: translateY(-50%);
+		transform: translateY(-50%);
+	}
+
+</style>
+
+<body>
+	<div id="input_name" class="box">
+		<div class="wrapper_div_50_vertical">
+			<label for="fname">Name</label>
+		    <input type="text" id="fname" name="firstname" placeholder="Your name..">
+		    <input type="submit" onclick="on_click_input_name()" value="접속">
+		</div>
+	</div>
+</body>
+
+<script>
+    var socket = io();
+
+    function on_click_input_name() {
+		socket.emit('goLobby', {name: document.getElementById("fname").innerHTML});
+	}
+
+    socket.on('Lobby', function(data) {
+        if (data !== 'goLobby') {
+        	alert(data);
+        } else {
+			
+        }
+    });
+
+
+</script>
+
+</html>
