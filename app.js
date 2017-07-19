@@ -4,6 +4,7 @@ var express = require('express');
 var app = express();
 var serv = require('http').Server(app);
 
+
 require('./routes')(app);
 
 app.use('/client', express.static(__dirname + '/client'));
@@ -25,9 +26,8 @@ Room.initList();
 /* In Game */
 const Player = require('./server/player.js');
 var PLAYER_LIST = {};
-
+const Computer = require('./server/computer.js');
 const Bullet = require('./server/bullet.js');
-Bullet.addBullet(0, 0, 0, 0);
 
 var io = require('socket.io')(serv, {});
 io.sockets.on('connection', function(socket) {
@@ -50,6 +50,7 @@ io.sockets.on('connection', function(socket) {
       name = data.name;
     }
   });
+
 
   socket.on('GetLobby', function (data) {
     socket.emit('GetLobby', name, {state: Room.getState(), list: Room.getList()});
@@ -83,8 +84,9 @@ io.sockets.on('connection', function(socket) {
   });
  
   /* In Game */
-  /*
+  
   PLAYER_LIST[socket.id] = new Player(socket.id);
+  for (var i = 1; i <= 20; i++) Computer.addComputer(Math.floor(Math.random()*2)+1);
 
   socket.emit('initGame', socket.id, PLAYER_LIST);
 
@@ -105,8 +107,13 @@ io.sockets.on('connection', function(socket) {
 
   socket.on('moveMouse', function (angle) {
       PLAYER_LIST[socket.id].angle = angle;
-  });*/
+  });
 
+  socket.on('clickMouse', function ()
+  {
+      Bullet.addBullet(PLAYER_LIST[socket.id].x, PLAYER_LIST[socket.id].y, PLAYER_LIST[socket.id].angle, 
+                PLAYER_LIST[socket.id].shotSpeed, PLAYER_LIST[socket.id].shotRange, PLAYER_LIST[socket.id].shotDamage);
+  });
 
   socket.on('disconnect', function() {
     delete SOCKET_LIST[socket.id];
@@ -119,13 +126,12 @@ io.sockets.on('connection', function(socket) {
   });
 });
 
-
-/*
 setInterval(function() {
 
   var pack = {
     player: Player.updateList(PLAYER_LIST),
-    bullet: Bullet.updateList()
+    bullet: Bullet.updateList(PLAYER_LIST),
+    computer: Computer.updateList()
   }
 
   for (var i in SOCKET_LIST) {
@@ -133,4 +139,4 @@ setInterval(function() {
     socket.emit('newPosition', pack);
   }
 
-}, 1000/25);*/
+}, 1000/25);

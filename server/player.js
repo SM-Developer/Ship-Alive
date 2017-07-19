@@ -3,8 +3,9 @@
 const Ship = require ('../server/ship.js');
 
 class Player extends Ship{
-	constructor(id) {
-		super(0, 0, 0); // may be random
+    constructor(id)
+    {
+		super(0);
 		this.id = id;
 
 		this.pressRight = false;
@@ -13,13 +14,13 @@ class Player extends Ship{
 		this.pressDown =false;
 	}
 
-	update() {
-		// update Player
-		// ex) this.x = this.x + 3;
+    update()
+    {
 		this.move();
 	}
 
-	move() {
+    move()
+    {
 	    if(this.pressUp) this.moveUp();
 	    if(this.pressDown) this.moveDown();
 	    if(this.pressLeft) this.moveLeft();
@@ -36,13 +37,14 @@ class Player extends Ship{
                 id: list[i].id,
 				x: list[i].x,
 				y: list[i].y,
-                angle: list[i].angle
+				angle: list[i].angle,
+                hp: list[i].hp
 			});
 		}
 		//console.log(pack);
 
 		return pack;
-    }
+	}
 
 };
 

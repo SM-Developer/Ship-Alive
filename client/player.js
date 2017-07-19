@@ -1,8 +1,8 @@
 class Player extends Ship
 {
-    constructor(x, y, angle)
+    constructor(x, y, angle, hp)
     {
-		super(x, y, angle);
+		super(x, y, angle, hp);
     }
 
     setScreen(scr)
@@ -23,6 +23,8 @@ class Player extends Ship
         context.drawImage(img.player, this.x - w/2, this.y - h/2);
 
         context.restore();
+
+        this.printHp(context);
         
         this.x += scr.x;
         this.y += scr.y;
