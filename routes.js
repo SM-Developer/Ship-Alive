@@ -13,6 +13,6 @@ module.exports = function(app){
 	});
 
 	app.get('/room', function(req, res) {
-	  res.sendFile(__dirname + '/client/public/lobby.html');
+	  res.sendFile(__dirname + '/client/public/room.html');
 	});
 }

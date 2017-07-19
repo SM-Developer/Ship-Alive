@@ -14,7 +14,6 @@
     	name = name;
     	document.getElementById('ship_frame').src = "http://localhost:2000/lobby";
 		document.getElementById('ship_frame').onload = function() {
-			console.log(data);
 		 	var h = document.getElementById('ship_frame').contentWindow.initRoom(data);
 		 	document.getElementById('ship_frame').contentWindow.document.getElementById("room").innerHTML = h;
 		};
