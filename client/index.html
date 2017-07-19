@@ -7,41 +7,47 @@
 </style>
 
 <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script type = "text/javascript" src = "./client/object.js"></script>
+<script type = "text/javascript" src = "./client/ship.js"></script>
+<script type = "text/javascript" src = "./client/player.js"></script>
+
 <script>
     var context = document.getElementById("context").getContext("2d");
 
     var socket = io();
+    var socketId = 0;
 
     var img = new Object();
     img.player = new Image();
     img.player.src = "./client/image/player.png";
 
-    //Player.list = {};
-    //NPC.list = {};
-    var socketId = 0;
+    Player.list = {};
+    var scr = new Object();
 
     socket.on('newPosition', function(data) {
         context.clearRect(0, 0, 800, 600);
 
         for (var i = 0; i < data.player.length; i++) {
-            var p = data.player[i];
-            context.drawImage(img.player, p.x, p.y);
+            if (Player.list[data.player[i].id] == null) {
+                Player.list[data.player[i].id] = new Player(data.player[i].x, data.player[i].y, data.player[i].angle);
+            }
+            else {
+                Player.list[data.player[i].id].x = data.player[i].x;
+                Player.list[data.player[i].id].y = data.player[i].y;
+                Player.list[data.player[i].id].angle = data.player[i].angle;
+            }
+        }
+
+        Player.list[socketId].setScreen(scr);
+
+        for (var i = 0; i < data.player.length; i++) {
+            Player.list[data.player[i].id].print(img, scr, context);
         }
     });
 
     socket.on('initGame', function(id, player) {
         // init player
         socketId = id;
-        /*
-        var tmpPlayer = 
-            Player( 
-                player.x,
-                player.y,
-                player.dir,
-                player.state
-            );
-        Player.list[socketId] = tmpPlayer;
-        scr = Screen( Player.list[socketId], map );*/
     });
 
     document.onkeydown = function(event) {
@@ -70,8 +76,9 @@
     }
     document.onmousemove = function (e) {
         var pkey = e || window.event;
-        pkey.pageX;
-        pkey.pageY;
+        var p = Player.list[socketId];
+
+        socket.emit('moveMouse', Math.atan2(pkey.pageY - 600/2, pkey.pageX - 800/2)*180/Math.PI);
     };
     document.onmousedown = function (e) {
     };

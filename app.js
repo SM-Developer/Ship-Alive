@@ -29,7 +29,7 @@ io.sockets.on('connection', function(socket) {
   SOCKET_LIST[socket.id] = socket;
   PLAYER_LIST[socket.id] = new Player(socket.id);
 
-  socket.emit('initGame', socket.id, Player.list[socket.id]);
+  socket.emit('initGame', socket.id, PLAYER_LIST);
 
   socket.on('keyPress', function (data) {
     if (data.inputId === 'right') {
@@ -44,6 +44,9 @@ io.sockets.on('connection', function(socket) {
     else if (data.inputId === 'down') {
       PLAYER_LIST[socket.id].pressDown = data.isPress;
     }
+  });
+  socket.on('moveMouse', function (angle) {
+      PLAYER_LIST[socket.id].angle = angle;
   });
 
   socket.on('disconnect', function() {

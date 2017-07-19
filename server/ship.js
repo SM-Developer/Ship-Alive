@@ -3,9 +3,9 @@
 const Obj = require ('../server/object.js');
 
 class Ship extends Obj{
-    constructor(x, y)
+    constructor(x, y, angle)
     {
-		super(x, y);
+		super(x, y, angle);
 		this.name = "Name";
 		this.speed = 3;
 	}

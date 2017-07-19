@@ -4,7 +4,7 @@ const Ship = require ('../server/ship.js');
 
 class Player extends Ship{
 	constructor(id) {
-		super(0, 0); // may be random
+		super(0, 0, 0); // may be random
 		this.id = id;
 
 		this.pressRight = false;
@@ -32,9 +32,11 @@ class Player extends Ship{
 		for (var i in list) {
 			list[i].update();
 			pack.push({
-				// pack Player
+			    // pack Player
+                id: list[i].id,
 				x: list[i].x,
 				y: list[i].y,
+                angle: list[i].angle
 			});
 		}
 		//console.log(pack);
