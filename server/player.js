@@ -20,14 +20,10 @@ class Player extends Ship{
 	}
 
 	move() {
-		console.log(this.pressRight);
-	    if (this.pressRight) {
-	      	this.x += 3;
-	    } else if (this.pressLeft) {
-	      	this.x -= 3;
-	    } else {
-
-	    }
+	    if(this.pressUp) this.moveUp();
+	    if(this.pressDown) this.moveDown();
+	    if(this.pressLeft) this.moveLeft();
+	    if(this.pressRight) this.moveRight();
 	}
 
 	static updateList(list) {
@@ -47,6 +43,5 @@ class Player extends Ship{
     }
 
 };
-
 
 module.exports = Player;

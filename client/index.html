@@ -1,41 +1,39 @@
-<canvas id="ctx" width="800" height="600"></canvas>
+<canvas id="context" width="800" height="600"></canvas>
 
-<div id="chat-text" style="width:500px;height:100px,overflow-y:scroll">
-    <div>Hello</div>
-</div>
-<form id="chat-form">
-    <input id="chat-input" type="text" style="width:500px"></input>
-</form>
+<style type="text/css">
+#context{
+    background:#101010;
+}
+</style>
 
 <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 <script>
-    var ctx = document.getElementById("ctx").getContext("2d");
+    var context = document.getElementById("context").getContext("2d");
 
     var socket = io();
 
+    var img = new Object();
+    img.player = new Image();
+    img.player.src = "./client/image/player.png";
+
     socket.on('newPosition', function(data) {
-        ctx.clearRect(0, 0, 800, 600);
-        /*
-        for (var i = 0; i < data.player.length; i++)
-            ctx.fillText(0, data.player[i].x, data.player[i].y);
-        for (var i = 0; i < data.bullet.length; i++)
-            ctx.fillRect(data.bullet[i].x - 5, data.bullet[i].y - 5, 10, 10);*/
-        //console.log(data);
+        context.clearRect(0, 0, 800, 600);
+
+        for (var i = 0; i < data.player.length; i++) {
+            var p = data.player[i];
+            context.drawImage(img.player, p.x, p.y);
+        }
     });
 
     document.onkeydown = function(event) {
-        if(event.keyCode === 68) {
-            console.log("right");
+        if(event.keyCode === 68)
             socket.emit('keyPress', {inputId:'right', isPress: true, state: 'walk'});
-        }
         if(event.keyCode === 83)
             socket.emit('keyPress', {inputId:'down', isPress: true, state: 'walk'});
         if(event.keyCode === 65)
             socket.emit('keyPress', {inputId:'left', isPress: true, state: 'walk'});
         if(event.keyCode === 87)
-            socket.emit('keyPress', {inputId:'up', isPress: true, state: 'walk'});
-
-
+            socket.emit('keyPress', {inputId: 'up', isPress: true, state: 'walk'});
     }
     document.onkeyup = function(event) {
         if(event.keyCode === 68)
@@ -50,7 +48,15 @@
             var angle = 0; //Math.atan2(y,x) / Math.PI * 180;
             socket.emit('keyPress', {inputId:'shoot', angle: angle});
         }
-
+    }
+    document.onmousemove = function (e) {
+        var pkey = e || window.event;
+        pkey.pageX;
+        pkey.pageY;
+    };
+    document.onmousedown = function (e) {
+    };
+    document.onclick = function (e) {
     }
 
 </script>
