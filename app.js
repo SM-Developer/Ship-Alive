@@ -19,6 +19,9 @@ var DEBUG = true;
 const Player = require('./server/player.js');
 var PLAYER_LIST = {};
 
+const Bullet = require('./server/bullet.js');
+Bullet.addBullet(0, 0, 0, 0);
+
 var io = require('socket.io')(serv, {});
 io.sockets.on('connection', function(socket) {
   socket.id = Math.random();
@@ -51,6 +54,7 @@ setInterval(function() {
 
   var pack = {
     player: Player.updateList(PLAYER_LIST),
+    bullet: Bullet.updateList()
   }
 
   for (var i in SOCKET_LIST) {
