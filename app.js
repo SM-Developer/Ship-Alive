@@ -24,9 +24,12 @@ Bullet.addBullet(0, 0, 0, 0);
 
 var io = require('socket.io')(serv, {});
 io.sockets.on('connection', function(socket) {
+
   socket.id = Math.random();
   SOCKET_LIST[socket.id] = socket;
   PLAYER_LIST[socket.id] = new Player(socket.id);
+
+  socket.emit('initGame', socket.id, Player.list[socket.id]);
 
   socket.on('keyPress', function (data) {
     if (data.inputId === 'right') {

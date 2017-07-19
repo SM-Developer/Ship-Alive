@@ -16,6 +16,10 @@
     img.player = new Image();
     img.player.src = "./client/image/player.png";
 
+    //Player.list = {};
+    //NPC.list = {};
+    var socketId = 0;
+
     socket.on('newPosition', function(data) {
         context.clearRect(0, 0, 800, 600);
 
@@ -23,6 +27,21 @@
             var p = data.player[i];
             context.drawImage(img.player, p.x, p.y);
         }
+    });
+
+    socket.on('initGame', function(id, player) {
+        // init player
+        socketId = id;
+        /*
+        var tmpPlayer = 
+            Player( 
+                player.x,
+                player.y,
+                player.dir,
+                player.state
+            );
+        Player.list[socketId] = tmpPlayer;
+        scr = Screen( Player.list[socketId], map );*/
     });
 
     document.onkeydown = function(event) {
