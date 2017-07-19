@@ -1,0 +1,40 @@
+
+#header {
+	top: 0;
+	width: 100%;
+	height: 57px;
+	box-shadow: 0 1px 0 rgba(12,13,14,0.15), 0 0 0 transparent, 0 0 0 transparent, 0 0 0 transparent;
+}
+
+ 
+#logo_txt {
+	padding: 16.5 4;
+    float: left;
+    font-weight: 800;
+    font-size: 18px;
+    margin: 0;
+}
+
+#menu_txt {
+	padding: 20.5 4;
+    float: right;
+    font-weight: 600;
+    font-size: 12px;
+    margin: 0;
+}
+
+#room {
+	padding: 12 0;
+	box-shadow: 0 1px 0 rgba(12,13,14,0.15), 0 0 0 transparent, 0 0 0 transparent, 0 0 0 transparent;
+}
+
+#room-box {
+	margin: 24 0;
+	height: 80px;
+	transition: background-color 0.5s ease;
+	background: #E3F2FD;
+}
+
+#room-box:hover {
+	background: #F8BBD0;
+}

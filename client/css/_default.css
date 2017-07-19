@@ -1,3 +1,5 @@
+@import url('http://fonts.googleapis.com/earlyaccess/nanumgothic.css');
+
 html, body {
 	margin: 0;
 	padding: 0;
@@ -11,4 +13,23 @@ iframe {
 	margin: 0;
 	padding: 0;
 	border-width: 0;
+}
+
+.max-container {
+    max-width: 800px;
+    margin: auto;
+    vertical-align: middle;
+}
+
+.gothic_txt {
+	font-family: NaumGothic;
+}
+
+.box {
+    position: relative;
+    display: block;
+    background: #ffffff;
+    padding: 0 10px;
+    border-radius: 3px;
+    box-shadow: 0 2px 5px rgba(11, 12, 12, 0.16);
 }

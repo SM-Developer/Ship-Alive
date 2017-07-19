@@ -1,0 +1,36 @@
+<html>
+
+<head>
+<link rel="stylesheet" type="text/css" href="../client/css/_default.css">
+<link rel="stylesheet" type="text/css" href="../client/css/login.css">
+</head>
+
+<body>
+	<div id="input_name" class="box">
+		<div class="wrapper_div_50_vertical">
+			<label for="fname">Name</label>
+		    <input type="text" id="fname" name="firstname" placeholder="Your name..">
+		    <input type="submit" onclick="on_click_input_name()" value="접속">
+		</div>
+	</div>
+</body>
+
+<script>
+
+	var socket = parent.socket;
+
+    function on_click_input_name() {
+		socket.emit('LogIn', {name: document.getElementById("fname").value});
+	}
+
+    socket.on('Lobby', function(data) {
+        if (data !== 'GetLobby') {
+        	alert(data);
+        } else {
+			socket.emit('GetLobby', {name: document.getElementById("fname").value});
+        }
+    });
+
+</script>
+
+</html>
