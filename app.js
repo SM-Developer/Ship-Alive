@@ -4,12 +4,7 @@ var express = require('express');
 var app = express();
 var serv = require('http').Server(app);
 
-app.get('/', function(req, res) {
-  res.sendFile(__dirname + '/client/login.html');
-});
-app.get('/lobby', function(req, res) {
-  res.sendFile(__dirname + '/client/lobby.html');
-});
+require('./routes')(app);
 
 app.use('/client', express.static(__dirname + '/client'));
 
@@ -37,21 +32,27 @@ io.sockets.on('connection', function(socket) {
   socket.id = Math.random();
   SOCKET_LIST[socket.id] = socket;
 
+  var name;
+
   Lobby.addPlayer(socket.id);
-  socket.on('goLobby', function (data) {
-    console.log(data.name);
-    console.log(PLAYER_NAME_LIST[data.name]);
+  socket.on('LogIn', function (data) {
     if (PLAYER_NAME_LIST[data.name] != undefined) {
       socket.emit('Lobby', 'alread exist name');
     } else {
-      socket.emit('Lobby', 'goLobby');
-      PLAYER_NAME_LIST[data.name] = "yes";
+      socket.emit('Lobby', 'GetLobby');
+      PLAYER_NAME_LIST[data.name] = data.name;
+      name = data.name;
     }
   });
-  //console.log("A");
-  
-  /* In Game */
 
+  socket.on('GetLobby', function (data) {
+    if (DEBUG) console.log('GetLobby');
+    socket.emit('GetLobby', name);
+  });
+
+ 
+  /* In Game */
+  /*
   PLAYER_LIST[socket.id] = new Player(socket.id);
 
   socket.emit('initGame', socket.id, PLAYER_LIST);
@@ -73,7 +74,7 @@ io.sockets.on('connection', function(socket) {
 
   socket.on('moveMouse', function (angle) {
       PLAYER_LIST[socket.id].angle = angle;
-  });
+  });*/
 
 
   socket.on('disconnect', function() {
@@ -81,6 +82,7 @@ io.sockets.on('connection', function(socket) {
     delete PLAYER_LIST[socket.id];
   });
 });
+
 
 /*
 setInterval(function() {
